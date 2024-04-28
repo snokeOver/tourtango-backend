@@ -42,10 +42,31 @@ async function run() {
       }
     });
 
-    // Get all tour spots from db
+    // Get all tourist spots from db
     app.get("/api/spots", async (req, res) => {
-      const result = await tourSpotCollection.find().toArray();
-      res.send(result);
+      try {
+        const result = await tourSpotCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching tour spots:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get one tourist spot from db based on the id
+    app.get("/api/spot/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      try {
+        const result = await tourSpotCollection.findOne(query);
+        if (result) {
+          res.send(result);
+        } else {
+          res.status(404).send({ message: "Tourist spot not found" });
+        }
+      } catch (error) {
+        console.error("Error fetching tour spot:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
     });
 
     // Get User's tour spots from db filtered by UID
