@@ -73,6 +73,21 @@ async function run() {
       }
     });
 
+    // Update Single tour spot from db filtered by id
+    app.patch("/api/spot/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const updateData = req.body; // Assuming the request body contains the updated data
+      try {
+        const result = await tourSpotCollection.updateOne(query, {
+          $set: updateData,
+        });
+        res.status(200).send(result);
+      } catch (error) {
+        console.error("Error updating this tour spot:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
     // End of the all API
   } catch (err) {
     console.log(err.message);
