@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -30,6 +30,10 @@ async function run() {
 
     const tourSpotCollection = client.db("tourTangoDB").collection("tour-spot");
 
+    const userPreferenceCollection = client
+      .db("tourTangoDB")
+      .collection("user-preference");
+
     // add tour spots to db
     app.post("/api/spots/add", async (req, res) => {
       try {
@@ -39,6 +43,51 @@ async function run() {
       } catch (error) {
         console.error("Error adding tour spot:", error);
         res.status(500).send({ message: "Failed to add tour spot" });
+      }
+    });
+
+    // Add user preference to db
+    app.post("/api/user-preference", async (req, res) => {
+      try {
+        const existingPreference = await userPreferenceCollection.findOne({
+          uid: req.body.uid,
+        });
+        if (existingPreference) {
+          const query = { uid: req.body.uid };
+          const updateData = req.body;
+          const updatedResult = await userPreferenceCollection.updateOne(
+            query,
+            {
+              $set: updateData,
+            }
+          );
+          res.status(200).send(updatedResult);
+        } else {
+          const insertResult = await userPreferenceCollection.insertOne(
+            req.body
+          );
+          res.send({ message: "Insert Success" });
+        }
+      } catch (error) {
+        console.error("Error adding user preference:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get user preference from db based on the uid
+    app.get("/api/user-preference/:id", async (req, res) => {
+      try {
+        const result = await userPreferenceCollection.findOne({
+          uid: req.params.id,
+        });
+        if (result) {
+          res.send(result);
+        } else {
+          res.status(404).send({ message: "Tourist spot not found" });
+        }
+      } catch (error) {
+        console.error("Error fetching tour spot:", error);
+        res.status(500).send({ message: "Internal server error" });
       }
     });
 
