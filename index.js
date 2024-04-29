@@ -28,14 +28,16 @@ async function run() {
       console.log("MongoDB connection successful!");
     }
 
+    // tourist spot collection
     const tourSpotCollection = client.db("tourTangoDB").collection("tour-spot");
-
+    // Country collection
     const countryCollection = client.db("tourTangoDB").collection("countries");
-
+    // Tourist spot collection for login and register page slidder
     const tourSpotColForLogin = client
       .db("tourTangoDB")
       .collection("loginSliderImageUrl");
 
+    // User Preference collection
     const userPreferenceCollection = client
       .db("tourTangoDB")
       .collection("user-preference");
@@ -194,9 +196,7 @@ async function run() {
 
 run().catch(console.error);
 
-app.get("/", (req, res) => {
-  res.send("TourTango server is running!");
-});
+// Open the server port for listening
 
 app.listen(serverPort, () => {
   console.log(`TourTango server is listening on port ${serverPort}`);
