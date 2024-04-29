@@ -30,6 +30,12 @@ async function run() {
 
     const tourSpotCollection = client.db("tourTangoDB").collection("tour-spot");
 
+    const countryCollection = client.db("tourTangoDB").collection("countries");
+
+    const tourSpotColForLogin = client
+      .db("tourTangoDB")
+      .collection("loginSliderImageUrl");
+
     const userPreferenceCollection = client
       .db("tourTangoDB")
       .collection("user-preference");
@@ -98,6 +104,28 @@ async function run() {
         res.send(result);
       } catch (error) {
         console.error("Error fetching tour spots:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get all tourist spots from db for login and register page
+    app.get("/api/spots/login", async (req, res) => {
+      try {
+        const result = await tourSpotColForLogin.find().toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching tour spots for login page:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get all country information from db for banner and country section
+    app.get("/api/spots/country", async (req, res) => {
+      try {
+        const result = await countryCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching country collection:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
