@@ -30,8 +30,13 @@ async function run() {
 
     // tourist spot collection
     const tourSpotCollection = client.db("tourTangoDB").collection("tour-spot");
+
     // Country collection
     const countryCollection = client.db("tourTangoDB").collection("countries");
+
+    // Cusomer collection
+    const customerCollection = client.db("tourTangoDB").collection("customers");
+
     // Tourist spot collection for login and register page slidder
     const tourSpotColForLogin = client
       .db("tourTangoDB")
@@ -106,6 +111,17 @@ async function run() {
         res.send(result);
       } catch (error) {
         console.error("Error fetching tour spots:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get all customer testimonials from db
+    app.get("/api/customers", async (req, res) => {
+      try {
+        const result = await customerCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching Customer reviews:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
