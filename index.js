@@ -37,6 +37,11 @@ async function run() {
     // Cusomer collection
     const customerCollection = client.db("tourTangoDB").collection("customers");
 
+    // how-we-help collection
+    const howWeHelpCollection = client
+      .db("tourTangoDB")
+      .collection("how-we-help");
+
     // Tourist spot collection for login and register page slidder
     const tourSpotColForLogin = client
       .db("tourTangoDB")
@@ -111,6 +116,17 @@ async function run() {
         res.send(result);
       } catch (error) {
         console.error("Error fetching tour spots:", error);
+        res.status(500).send({ message: "Internal server error" });
+      }
+    });
+
+    // Get all how-we-help data from db
+    app.get("/api/how-we-help", async (req, res) => {
+      try {
+        const result = await howWeHelpCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching how-we-help collection:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
