@@ -20,10 +20,10 @@ const client = new MongoClient(process.env.MONGOURL);
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    const result = await client.connect();
-    if (result.topology.client.topology.s.state === "connected") {
-      console.log("MongoDB connection successful!");
-    }
+    // const result = await client.connect();
+    // if (result.topology.client.topology.s.state === "connected") {
+    //   console.log("MongoDB connection successful!");
+    // }
 
     // tourist spot collection
     const tourSpotCollection = client.db("tourTangoDB").collection("tour-spot");
@@ -225,8 +225,12 @@ async function run() {
 
 run().catch(console.error);
 
-// Open the server port for listening
+// For testing the API
+app.get("/", (req, res) => {
+  res.send("Tour Tango is going on");
+});
 
+// Open the server port for listening
 app.listen(serverPort, () => {
   console.log(`TourTango server is listening on port ${serverPort}`);
 });
