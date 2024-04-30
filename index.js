@@ -9,16 +9,13 @@ const app = express();
 dotenv.config();
 
 const serverPort = process.env.PORT || 5000;
-const user = process.env.USER;
-const pass = process.env.PASS;
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${user}:${pass}@cluster0.urukmdc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri);
+const client = new MongoClient(process.env.MONGOURL);
 
 async function run() {
   try {
@@ -52,15 +49,15 @@ async function run() {
       .db("tourTangoDB")
       .collection("user-preference");
 
-    // add tour spots to db
+    // add Tourist spots to db
     app.post("/api/spots/add", async (req, res) => {
       try {
         const result = await tourSpotCollection.insertOne(req.body);
         console.log(result);
-        res.status(201).send({ message: "Tour spot added successfully" });
+        res.status(201).send({ message: "Tourist spot added successfully" });
       } catch (error) {
-        console.error("Error adding tour spot:", error);
-        res.status(500).send({ message: "Failed to add tour spot" });
+        console.error("Error adding Tourist spot:", error);
+        res.status(500).send({ message: "Failed to add Tourist spot" });
       }
     });
 
@@ -104,7 +101,7 @@ async function run() {
           res.status(404).send({ message: "Tourist spot not found" });
         }
       } catch (error) {
-        console.error("Error fetching tour spot:", error);
+        console.error("Error fetching Tourist spot:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
@@ -115,7 +112,7 @@ async function run() {
         const result = await tourSpotCollection.find().toArray();
         res.send(result);
       } catch (error) {
-        console.error("Error fetching tour spots:", error);
+        console.error("Error fetching Tourist spots:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
@@ -148,7 +145,7 @@ async function run() {
         const result = await tourSpotColForLogin.find().toArray();
         res.send(result);
       } catch (error) {
-        console.error("Error fetching tour spots for login page:", error);
+        console.error("Error fetching Tourist spots for login page:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
@@ -175,12 +172,12 @@ async function run() {
           res.status(404).send({ message: "Tourist spot not found" });
         }
       } catch (error) {
-        console.error("Error fetching tour spot:", error);
+        console.error("Error fetching Tourist spot:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
 
-    // Get User's tour spots from db filtered by UID
+    // Get User's Tourist spots from db filtered by UID
     app.get("/api/spots/:uid", async (req, res) => {
       try {
         const result = await tourSpotCollection
@@ -188,24 +185,24 @@ async function run() {
           .toArray();
         res.status(200).send(result);
       } catch (error) {
-        console.error("Error fetching user's tour spots:", error);
+        console.error("Error fetching user's Tourist spots:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
 
-    // Delete Single tour spot from db filtered by id
+    // Delete Single Tourist spot from db filtered by id
     app.delete("/api/spot/:id", async (req, res) => {
       const query = { _id: new ObjectId(req.params.id) };
       try {
         const result = await tourSpotCollection.deleteOne(query);
         res.status(200).send(result);
       } catch (error) {
-        console.error("Error deleting this tour spot:", error);
+        console.error("Error deleting this Tourist spot:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
 
-    // Update Single tour spot from db filtered by id
+    // Update Single Tourist spot from db filtered by id
     app.patch("/api/spot/:id", async (req, res) => {
       const query = { _id: new ObjectId(req.params.id) };
       const updateData = req.body; // Assuming the request body contains the updated data
@@ -215,7 +212,7 @@ async function run() {
         });
         res.status(200).send(result);
       } catch (error) {
-        console.error("Error updating this tour spot:", error);
+        console.error("Error updating this Tourist spot:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
