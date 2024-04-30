@@ -22,14 +22,10 @@
 
 - **_Theme Mood_**: Implemented Dark and Light mood for better user experience.
 
-<h2>Packages Used</h2>
+<h2>Packages Used for Back End</h2>
 
-- **_Leaflet, React-Leaflet, React-Leaflet_cluster_**: For displaying office locations on Maps and group together the locations.
-- **_Swiper_**: Used to show the banner images in a slide view.
-- **_React-Simple-Typewriter_**: To handle the animation on Banner in writings.
-- **_React-Tooltip_**: To make the user experince better with tooltip functionality.
-- **_Firebase_**: Used for secure and robust user registration, logging, authentication.
-- **_React-Router, React-Router-Dom_**: To handle all routing of this SPA.
-- **_React-Helmet-Async_**: To show the page title dynamically on the browser tab.
-- **_React-Toastify_**: Used for making visually pleasing toast on user actions.
-- **_Styled-Components_**: Used for go to top button.
+- **_MongoDB_**: Facilitates interaction with MongoDB, a NoSQL database, allowing the Express server to connect, perform CRUD operations, and manage data stored in JSON-like documents.
+- **_Cors_**: Enables Cross-Origin Resource Sharing (CORS) in the Express server.
+- **_Dotenv_**: Loads environment variables from a .env file into the Node.js application's process environment, enhancing security by storing sensitive information separate from the codebase.
+
+- **_Express_**: A web framework for Node.js simplifying the development of web applications and APIs by providing features for routing, middleware, request/response processing, and more.
